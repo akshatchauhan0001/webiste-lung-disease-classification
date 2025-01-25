@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lung Disease Classification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        body {
+            margin: 0;
+            background-color: black;
+            font-family: Poppins;
+        }
+
+        header {
+            width: 1140px;
+            max-width: 90%;
+            display: flex;
+            justify-content: flex-end;
+            margin: auto;
+            height: 50px;
+            align-items: center;
+        }
+
+        header .logo {
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color:white;
+            margin-right:0px;
+        }
+
+        header .logo-covid{
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color:white;
+            margin-right:130px;
+        }
+
+        header .logo-pneumonia{
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color:white;
+            margin-right:120px;
+        }
+        header .logo-opacity{
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color:white;
+            margin-right:120px;
+        }
+        header .logo-normal{
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color:white;
+            margin-right:110px;
+        }
+
+        header .logo:hover {
+            color: #black; /* Change the text color */
+            transform: scale(1.1); /* Slightly enlarge the text */
+        }
+
+        header nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .prediction-section {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content closer to the top */
+            align-items: center;
+            height: 100vh; /* Full height of the viewport */
+            text-align: center;
+            padding-top: 20px; /* Add some padding at the top */
+        }
+
+        .result {
+            margin: 10px 0; /* Reduce vertical margin */
+            color:white;
+        }
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+}
+
+.img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 1; /* Ensures the image stays on top */
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.image-container::after, .image-container::before {
+    content: "";
+    position: absolute;
+    top: -5px; /* Adjusted for reduced length */
+    left: -5px; /* Adjusted for reduced length */
+    width: calc(100% + 10px); /* Adjusted to shrink the border */
+    height: calc(100% + 10px); /* Adjusted to shrink the border */
+    border-radius: 10px; /* Optional for rounded corners */
+    background-image: conic-gradient(from var(--angle), transparent 80%,white);
+    animation: spin 4s linear infinite;
+    z-index: 0; /* Positioned behind the image */
+}
+
+@keyframes spin {
+    from {
+        --angle: 0deg;
+    }
+    to {
+        --angle: 360deg;
+    }
+}
+
+
+        .back-button {
+            display: flex;
+            flex-direction: column; /* Stack the images vertically */
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            bottom: 20px; /* Adjust as needed */
+            width: 100%;
+            gap: 0; /* No extra spacing between the images */
+        }
+
+        .back-button img {
+            width: 40px; /* Set consistent size */
+            height: 40px;
+        }
+
+        .second-page-headings {
+            text-align: center;
+        }
+
+        /* Add your h1 animation styling here */
+        h1 {
+            font-family: 'Poppins';
+            font-size: 50px;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+            background-size: 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: animate-gradient 2.5s linear infinite;
+        }
+        h2{
+            font-family: 'Poppins';
+            font-size: 30px;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+            background-size: 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: animate-gradient 2.5s linear infinite;
+        }
+
+        @keyframes animate-gradient {
+            to {
+                background-position: 200%;
+            }
+        }
+
+        .second-page-headings h1, .second-page-headings h2 {
+            margin: 0; /* Removes margin */
+            padding: 0; /* Removes padding */
+            margin-top: 10px;
+        }
+
+        .sample-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sample-button img {
+            width: 50px; /* Set consistent size */
+            height: 50px;
+            margin-right: 15px;
+            margin-top: 10px;
+        }
+
+        .message {
+            display: none;
+            background-color: #f8d7da; /* Light red background */
+            color: #721c24; /* Dark red text */
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+            max-width: 300px;
+            position: absolute; /* Position absolute to prevent layout shift */
+            top: 50px; /* Adjust this value to position it correctly */
+            right: 40px;
+            transform: translateX(-50%);
+        }
+        .lime a{
+        position:absolute;
+        top:650px;
+        left:630px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration:none;
+        color:white;
+        }
+
+    </style>
+    <script>
+        // Function to display the message for 5 seconds
+        window.onload = function() {
+            const message = document.getElementById('sample-message');
+            message.style.display = 'block'; // Show the message
+            setTimeout(() => {
+                message.style.display = 'none'; // Hide the message after 5 seconds
+            }, 2000);
+        };
+    </script>
+</head>
+<body>
+<header>
+    <div class="sample-button">
+        <a href="/covid_sample" style="text-decoration: none;">
+            <div class="logo-covid">COVID-19</div>
+        </a>
+        <div id="sample-message" class="message">Click here to see other sample classes</div> <!-- Message to be displayed -->
+    </div>
+    <div class="sample-button">
+        <a href="/pneumonia_sample" style="text-decoration: none;">
+            <div class="logo-pneumonia">VIRAL PNEUMONIA</div>
+        </a>
+    </div>
+    <div class="sample-button">
+        <a href="/opacity_sample" style="text-decoration: none;">
+            <div class="logo-opacity">LUNG OPACITY</div>
+        </a>
+    </div>
+    <div class="sample-button">
+        <a href="/normal_sample" style="text-decoration: none;">
+            <div class="logo-normal">NORMAL</div>
+        </a>
+    </div>
+
+    <div class="logo">AKSHAT CHAUHAN</div>
+</header>
+<br>
+<br>
+<div class="second-page-headings">
+    <h1> LUNG  DISEASE  CLASSIFICATION</h1>
+    <h2>ResNet50 + FCNN</h2>
+</div>
+
+<div class="prediction-section">
+    {% if prediction %}
+        <div id="result" class="result">{{ prediction }}</div>
+    {% endif %}
+    {% if image_file %}
+    <br>
+    <div class="image-container">
+        <img class="img" src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Selected Image">
+        </div>
+    {% endif %}
+</div>
+
+<div class="lime">
+    <a href="\four">LIME EXPLANATION</a>
+</div>
+
+<div class="back-button">
+    <a href="/">
+        <img src="static/images/left-arrow.png" alt="Back">
+    </a>
+</div>
+
+</body>
+</html>

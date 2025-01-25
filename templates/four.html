@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIME Explanation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+    background: rgba(30, 30, 47, 0.2); /* Adjust transparency with alpha (0.2 = 20% opacity) */
+    backdrop-filter: blur(15px); /* Apply blur effect */
+    -webkit-backdrop-filter: blur(15px); /* For Safari support */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+
+        .container {
+            display: flex;
+            align-items: center;
+            width: 80%;
+            max-width: 1200px;
+            background: rgba(12, 1, 1, 0.964);
+            padding: 40px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .left-section {
+            flex: 1;
+            padding-right: 40px;
+            text-align: left;
+        }
+
+        .separator {
+            width: 2px;
+            background: #fff;
+            height: 100%;
+        }
+
+        .right-section {
+            flex: 1;
+            padding-left: 40px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        form input[type="file"] {
+            margin: 15px 0;
+            padding: 10px;
+            border: none;
+            background: #120707;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            outline: none;
+        }
+
+        form button {
+            background: #ff6b6b;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        form button:hover {
+            background: #ff4757;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5);
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        .second-page-headings {
+            text-align: center;
+        }
+
+        /* Add your h1 animation styling here */
+        h1 {
+            font-family: 'Poppins';
+            font-size: 50px;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+            background-size: 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: animate-gradient 2.5s linear infinite;
+        }
+        h2{
+            font-family: 'Poppins';
+            font-size: 30px;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+            background-size: 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: animate-gradient 2.5s linear infinite;
+        }
+
+        @keyframes animate-gradient {
+            to {
+                background-position: 200%;
+            }
+        }
+
+        .second-page-headings h1, .second-page-headings h2 .second-page-headings h4{
+            margin: 0; /* Removes margin */
+            padding: 0; /* Removes padding */
+            margin-top: 10px;
+        }
+
+        .sample-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="second-page-heading">
+            <h1>LIME MODEL EXPLANATION</h1>
+            <form action="/four" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload and Analyze</button>
+            </form>
+        </div>
+        <div class="separator"></div>
+        <div class="right-section">
+            {% if lime_image %}
+
+                <img src="{{ url_for('static', filename=lime_image) }}" alt="LIME Explanation">
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
